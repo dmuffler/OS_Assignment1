@@ -40,14 +40,12 @@ void buildCommands(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1],
 	}
 }
 
-// gets the file path from the user(unfinished).
-void getFilePath(char* fileHolder[1]) {
+// gets the file path from the user(untested).
+void getFilePath(char fileHolder[MAX_ARGUMENT_COUNT + 2]) {
 
-}
-
-// frees allocated memory.
-void freeFileMemory(char* fileHolder[1]) {
-
+	printf("file>");
+	fgets(fileHolder, MAX_INPUT, stdin);
+	fileHolder[strlen(fileHolder) - 1] = '\0';
 }
 
 // frees allocated memory.
@@ -68,12 +66,15 @@ int main(int argc, char *argv[]) {
 	// 2d array to hold the commands. 2nd dimension a to save room for NULL terminator.
 	char* commands[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1];
 	int actualArgCount[COMMAND_COUNT];
-	char* filePath[1];
+
+	// added two for newline char and null terminator.
+	char filePath[MAX_ARGUMENT_COUNT + 2];
 	
+	// function calls to populate arrays with user input
 	buildCommands(commands, actualArgCount);
 	getFilePath(filePath);
 
-	// forks, execs, and waits here.
+	// forks, execs, and waits here, possibly their own function.
 
 	freeCommandMemory(commands, actualArgCount);
 }

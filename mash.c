@@ -8,11 +8,11 @@
 int const COMMAND_COUNT = 1;
 
 
-int const MAX_INPUT = 256;
+int const MAX_INPUT = 255;
 
-// builds the command array (seg fault somewhere).
+// builds the command array (fixed)!
 void buildCommands(char* commandHolder[3][5]) {
-	char string[MAX_INPUT];
+	char string[MAX_INPUT + 1];
 	char *token;
 
 	int commandNumber;
@@ -21,10 +21,11 @@ void buildCommands(char* commandHolder[3][5]) {
 		
 		fgets(string, MAX_INPUT, stdin);
 		string[strlen(string) - 1] = '\0';
+		token = strtok(string, " ");
 
 		do {
-			token = strtok(string, " ");
 			commandHolder[commandNumber][argumentCount] = strdup(token);
+			token = strtok(NULL, " ");
 			argumentCount++;
 		} while(token != NULL);
 		

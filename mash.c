@@ -8,7 +8,7 @@
 int const COMMAND_COUNT = 3;
 
 // the max amount of arguments supplied by the user.
-int const MAX_ARGUMENT_COUNT = 4;
+int const MAX_ARGUMENT_COUNT = 5;
 
 // max input from the user.
 int const MAX_INPUT = 255;
@@ -21,23 +21,25 @@ void buildCommands(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1],
 	char userInput[MAX_INPUT + 2];
 	char *token;
 
-	int commandNumber;
-	for (commandNumber = 0; commandNumber < COMMAND_COUNT; commandNumber++) {
-		int argumentNumber = 0;
+	int command;
+	for (command = 0; command < COMMAND_COUNT; command++) {
+		int argument = 0;
 		
-		printf("mash-%d>", commandNumber + 1);
+		printf("mash-%d>", command + 1);
 		fgets(userInput, MAX_INPUT + 1, stdin);
 		userInput[strlen(userInput) - 1] = '\0';
 		token = strtok(userInput, " ");
 
 		do {
-			commandHolder[commandNumber][argumentNumber] = strdup(token);
+			
+			commandHolder[command][argument] = strdup(token);
 			token = strtok(NULL, " ");
-			argumentNumber++;
+			argument++;
+		
 		} while(token != NULL);
 
-		actualArgCount[commandNumber] = argumentNumber;
-		commandHolder[commandNumber][argumentNumber] = NULL;
+		actualArgCount[command] = argument;
+		commandHolder[command][argument] = NULL;
 	}
 }
 
@@ -49,16 +51,33 @@ void getFilePath(char fileHolder[MAX_ARGUMENT_COUNT + 2]) {
 	fileHolder[strlen(fileHolder) - 1] = '\0';
 }
 
+// adds the file path to the array of commands
+void addFileToCommands(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1],
+						char fileHolder[MAX_ARGUMENT_COUNT + 2], 
+						int actualArgCount[COMMAND_COUNT]) {
+	
+	int command;
+	for (command = 0; command < COMMAND_COUNT; command++) {
+		
+		commandHolder[command][actualArgCount[command]] = strdup(fileHolder);
+		actualArgCount[command] = actualArgCount[command] + 1;
+		commandHolder[command][actualArgCount[command]] = NULL;
+	
+	}
+}
+
 // frees allocated memory.
 void freeCommandMemory(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1],
 						int actualArgCount[COMMAND_COUNT]) {
 	
-	int i;
-	int j;
-	for (i = 0; i < COMMAND_COUNT; i++) {
-		for (j = 0; j < actualArgCount[i]; j++) {
-			free(commandHolder[i][j]);
+	int command;
+	int argument;
+	for (command = 0; command < COMMAND_COUNT; command++) {
+	
+		for (argument = 0; argument < actualArgCount[command]; argument++) {
+			free(commandHolder[command][argument]);
 		}
+	
 	}
 }
 
@@ -75,6 +94,7 @@ int main(int argc, char *argv[]) {
 	// function calls to populate arrays with user input
 	buildCommands(commands, actualArgCount);
 	getFilePath(filePath);
+	addFileToCommands(commands, filePath, actualArgCount);
 
 	/* forks, execs, and waits here, possibly their own function(s).
 	
@@ -84,5 +104,6 @@ int main(int argc, char *argv[]) {
 	
 	execvp(commands[0][0], commands[0]);
 	*/
+
 	freeCommandMemory(commands, actualArgCount);
 }

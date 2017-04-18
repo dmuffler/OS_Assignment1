@@ -13,11 +13,12 @@ int const MAX_ARGUMENT_COUNT = 4;
 // max input from the user.
 int const MAX_INPUT = 255;
 
-// builds the command array (fixed)!
+// builds the command array.
 void buildCommands(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1], 
 					int actualArgCount[COMMAND_COUNT]) {
 	
-	char string[MAX_INPUT + 1];
+	// add 2 for '\n' and '\O'.
+	char userInput[MAX_INPUT + 2];
 	char *token;
 
 	int commandNumber;
@@ -25,9 +26,9 @@ void buildCommands(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1],
 		int argumentNumber = 0;
 		
 		printf("mash-%d>", commandNumber + 1);
-		fgets(string, MAX_INPUT, stdin);
-		string[strlen(string) - 1] = '\0';
-		token = strtok(string, " ");
+		fgets(userInput, MAX_INPUT + 1, stdin);
+		userInput[strlen(userInput) - 1] = '\0';
+		token = strtok(userInput, " ");
 
 		do {
 			commandHolder[commandNumber][argumentNumber] = strdup(token);
@@ -40,11 +41,11 @@ void buildCommands(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1],
 	}
 }
 
-// gets the file path from the user(untested).
+// gets the file path from the user.
 void getFilePath(char fileHolder[MAX_ARGUMENT_COUNT + 2]) {
 
 	printf("file>");
-	fgets(fileHolder, MAX_INPUT, stdin);
+	fgets(fileHolder, MAX_INPUT + 1, stdin);
 	fileHolder[strlen(fileHolder) - 1] = '\0';
 }
 
@@ -61,20 +62,27 @@ void freeCommandMemory(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1
 	}
 }
 
+// main entry of the Mash shell (command line not used.
 int main(int argc, char *argv[]) {
 
-	// 2d array to hold the commands. 2nd dimension a to save room for NULL terminator.
+	// 2d array to hold the commands. 2nd dimension adds 1 to add room for 'NULL'.
 	char* commands[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1];
 	int actualArgCount[COMMAND_COUNT];
 
-	// added two for newline char and null terminator.
+	// add 2 for '\n' and '\O'.
 	char filePath[MAX_ARGUMENT_COUNT + 2];
 	
 	// function calls to populate arrays with user input
 	buildCommands(commands, actualArgCount);
 	getFilePath(filePath);
 
-	// forks, execs, and waits here, possibly their own function.
-
+	/* forks, execs, and waits here, possibly their own function(s).
+	
+	Here is an example of execvp for syntax. commands[0][0] is the start
+	location of the first command. commands[0] holds the entirety of the
+	first command. There are 3 commands total.
+	
+	execvp(commands[0][0], commands[0]);
+	*/
 	freeCommandMemory(commands, actualArgCount);
 }

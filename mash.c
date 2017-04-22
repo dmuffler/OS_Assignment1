@@ -107,3 +107,122 @@ int main(int argc, char *argv[]) {
 
 	freeCommandMemory(commands, actualArgCount);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+// forks and executes three processes. (My practice at completing the assignment.
+										Use as a reference if you cannot figure
+										something out or don't). :)
+void runShell(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1]) {
+	  
+	// container to hold pid in order of completion.
+	int processes[3];
+	
+	int processCount = 0;
+	int statusOne;
+	int statusTwo;
+	int statusThree;
+
+
+
+	int processOne = fork();
+
+	if (processOne == 0) {
+		execvp(commandHolder[PROCESS_ONE][ARGUMENT_START], commandHolder[PROCESS_ONE]);
+	}
+
+	if (processOne > 0) {
+
+		int processTwo = fork();
+		processes[processCount++] = wait(&statusOne);
+
+
+		if (processTwo == 0) {
+			execvp(commandHolder[PROCESS_TWO][ARGUMENT_START], commandHolder[PROCESS_TWO]);
+		}
+		
+		if (processTwo > 0) {
+
+			int processThree = fork();
+			processes[processCount++] = wait(&statusTwo);
+
+			if (processThree == 0) {
+				execvp(commandHolder[PROCESS_THREE][ARGUMENT_START], commandHolder[PROCESS_THREE]);
+			}
+			
+			if (processThree > 0) {
+				processes[processCount++] = wait(&statusThree);
+			}
+		}
+
+		if (WEXITSTATUS(statusOne)) {
+			printf("[SHELL 1] STATUS CODE=-1\n");
+		}
+
+		if (WEXITSTATUS(statusTwo)) {
+			printf("[SHELL 2] STATUS CODE=-1\n");
+		}
+
+		if (WEXITSTATUS(statusThree)) {
+			printf("[SHELL 3] STATUS CODE=-1\n");
+		}		
+	}
+
+	printf("Done waiting on children: %d %d %d\n", processes[0], processes[1], processes[2]);
+}*/

@@ -81,12 +81,30 @@ void freeCommandMemory(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1
 	}
 }
 
+/*
+
+Garbage function at the moment
+int countWords(char* theString){
+	int i, count;
+
+	count = 0;
+	i = 1;
+	while(theString[i++] != NULL){
+		if(theString[i] == ' ' && theString[i - 1] != ' '){
+			count++;
+		}
+	}
+	return count;
+}
+*/
+
 // main entry of the Mash shell (command line not used.
 int main(int argc, char *argv[]) {
 
 	// 2d array to hold the commands. 2nd dimension adds 1 to add room for 'NULL'.
 	char* commands[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1];
-	int actualArgCount[COMMAND_COUNT];
+	int p1, p2, p3,p1Status, p2Status, p3Status, actualArgCount[COMMAND_COUNT];
+	
 
 	// add 2 for '\n' and '\O'.
 	char filePath[MAX_ARGUMENT_COUNT + 2];
@@ -104,6 +122,34 @@ int main(int argc, char *argv[]) {
 	
 	execvp(commands[0][0], commands[0]);
 	*/
+	p1 = fork();
+	if(p1 == 0){
+		//child 1
+		execvp(commands[0][0], commands[0]);
+	}
+	if(p1 > 0){
+		p2 = fork();
+		if(p2 == 0){
+			//child 2
+			execvp(commands[1][0], commands[1]);
+		}
+		if(p2 > 0){
+			p3 = fork();
+			if(p3 == 0){
+				//child 3
+				execvp(commands[2][0], commands[2]);
+			}
+			if(p3 > 0){
+				//parent
+				//Wait for children to finish
+				waitpid(p1, &p1Status, 0);
+				waitpid(p2, &p2Status, 0);
+				waitpid(p3, &p3Status, 0);
+				fprintf(stdout, "children: %d %d %d\n", p1, p2, p3);
+			}
+		}
+	}
+
 
 	freeCommandMemory(commands, actualArgCount);
 }

@@ -4,9 +4,9 @@
 #include "string.h"
 #include "sys/wait.h"
 
-#define COMMAND_COUNT = 3;
-#define MAX_ARGUMENT_COUNT = 5;
-#define MAX_INPUT = 255;
+#define COMMAND_COUNT 3
+#define MAX_ARGUMENT_COUNT 5
+#define MAX_INPUT 255
 
 
 // builds the command array.
@@ -43,8 +43,11 @@ void buildCommands(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1],
 void getFilePath(char fileHolder[MAX_ARGUMENT_COUNT + 2]) {
 
 	printf("file>");
-	fgets(fileHolder, MAX_INPUT + 1, stdin);
-	fileHolder[strlen(fileHolder) - 1] = '\0';
+	if(fgets(fileHolder, MAX_INPUT + 1, stdin)){
+		fileHolder[strlen(fileHolder) - 1] = '\0';
+	} else {
+		fileHolder = NULL;
+	}
 }
 
 // adds the file path to the array of commands
@@ -109,7 +112,8 @@ int main(int argc, char *argv[]) {
 	buildCommands(commands, actualArgCount);
 	getFilePath(filePath);
 	addFileToCommands(commands, filePath, actualArgCount);
-	runShell(commands);
+
+
 /*
 	p1 = fork();
 	if(p1 == 0){

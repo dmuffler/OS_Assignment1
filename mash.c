@@ -4,14 +4,10 @@
 #include "string.h"
 #include "sys/wait.h"
 
-// the amount of commands(1 for initial testing).
-int const COMMAND_COUNT = 3;
+#define COMMAND_COUNT = 3;
+#define MAX_ARGUMENT_COUNT = 5;
+#define MAX_INPUT = 255;
 
-// the max amount of arguments supplied by the user.
-int const MAX_ARGUMENT_COUNT = 5;
-
-// max input from the user.
-int const MAX_INPUT = 255;
 
 // builds the command array.
 void buildCommands(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1], 
@@ -113,15 +109,8 @@ int main(int argc, char *argv[]) {
 	buildCommands(commands, actualArgCount);
 	getFilePath(filePath);
 	addFileToCommands(commands, filePath, actualArgCount);
-
-	/* forks, execs, and waits here, possibly their own function(s).
-	
-	Here is an example of execvp for syntax. commands[0][0] is the start
-	location of the first command. commands[0] holds the entirety of the
-	first command. There are 3 commands total.
-	
-	execvp(commands[0][0], commands[0]);
-	*/
+	runShell(commands);
+/*
 	p1 = fork();
 	if(p1 == 0){
 		//child 1
@@ -149,7 +138,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-
+*/
 
 	freeCommandMemory(commands, actualArgCount);
 }
@@ -213,8 +202,8 @@ int main(int argc, char *argv[]) {
 
 /*
 // forks and executes three processes. (My practice at completing the assignment.
-										Use as a reference if you cannot figure
-										something out or don't). :)
+//										Use as a reference if you cannot figure
+//										something out or don't). :)
 void runShell(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1]) {
 	  
 	// container to hold pid in order of completion.

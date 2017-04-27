@@ -80,23 +80,6 @@ void freeCommandMemory(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1
 	}
 }
 
-/*
-
-Garbage function at the moment
-int countWords(char* theString){
-	int i, count;
-
-	count = 0;
-	i = 1;
-	while(theString[i++] != NULL){
-		if(theString[i] == ' ' && theString[i - 1] != ' '){
-			count++;
-		}
-	}
-	return count;
-}
-*/
-
 // main entry of the Mash shell (command line not used.
 int main(int argc, char *argv[]) {
 
@@ -114,19 +97,21 @@ int main(int argc, char *argv[]) {
 	addFileToCommands(commands, filePath, actualArgCount);
 
 
-/*
+
 	p1 = fork();
 	if(p1 == 0){
 		//child 1
 		execvp(commands[0][0], commands[0]);
 	}
 	if(p1 > 0){
+		p1 = wait(&p1Status);
 		p2 = fork();
 		if(p2 == 0){
 			//child 2
 			execvp(commands[1][0], commands[1]);
 		}
 		if(p2 > 0){
+			p2 = wait(&p2Status)
 			p3 = fork();
 			if(p3 == 0){
 				//child 3
@@ -135,59 +120,27 @@ int main(int argc, char *argv[]) {
 			if(p3 > 0){
 				//parent
 				//Wait for children to finish
-				waitpid(p1, &p1Status, 0);
-				waitpid(p2, &p2Status, 0);
-				waitpid(p3, &p3Status, 0);
-				fprintf(stdout, "children: %d %d %d\n", p1, p2, p3);
+				p3 = wait(&p3Status)
 			}
 		}
 	}
-*/
+	if (WEXITSTATUS(p1Status)) {
+		printf("[SHELL 1] STATUS CODE=-1\n");
+	}
+
+	if (WEXITSTATUS(p2Status)) {
+		printf("[SHELL 2] STATUS CODE=-1\n");
+	}
+
+	if (WEXITSTATUS(p3Status)) {
+		printf("[SHELL 3] STATUS CODE=-1\n");
+	}		
+	fprintf(stdout, "Done waiting on children: %d %d %d\n", p1, p2, p3);
+
+
 
 	freeCommandMemory(commands, actualArgCount);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

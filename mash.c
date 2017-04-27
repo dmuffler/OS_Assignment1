@@ -104,14 +104,16 @@ int main(int argc, char *argv[]) {
 		execvp(commands[0][0], commands[0]);
 	}
 	if(p1 > 0){
-		p1 = wait(&p1Status);
+		//p1 = wait(&p1Status);
+		wait(&p1Status);
 		p2 = fork();
 		if(p2 == 0){
 			//child 2
 			execvp(commands[1][0], commands[1]);
 		}
 		if(p2 > 0){
-			p2 = wait(&p2Status);
+			//p1 = wait(&p2Status);
+			wait(&p2Status);
 			p3 = fork();
 			if(p3 == 0){
 				//child 3
@@ -120,12 +122,14 @@ int main(int argc, char *argv[]) {
 			if(p3 > 0){
 				//parent
 				//Wait for children to finish
-				p3 = wait(&p3Status);
+				//p1 = wait(&p3Status);
+				wait(&p3Status);
 			}
 		}
 	}
 	if( access( filePath, F_OK ) != -1 ) {
-    // file exists
+   		// file exists
+
 		if (WEXITSTATUS(p1Status)) {
 			printf("[SHELL 1] STATUS CODE=-1\n");
 		}

@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
 	addFileToCommands(commands, filePath, actualArgCount);
 
 
-
+ 
 	p1 = fork();
 	if(p1 == 0){
 		//child 1
@@ -147,8 +147,9 @@ int main(int argc, char *argv[]) {
 
 
 	freeCommandMemory(commands, actualArgCount);
-}
 
+	return 0;
+}
 
 
 

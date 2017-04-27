@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
 			execvp(commands[1][0], commands[1]);
 		}
 		if(p2 > 0){
-			p2 = wait(&p2Status)
+			p2 = wait(&p2Status);
 			p3 = fork();
 			if(p3 == 0){
 				//child 3
@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
 			if(p3 > 0){
 				//parent
 				//Wait for children to finish
-				p3 = wait(&p3Status)
+				p3 = wait(&p3Status);
 			}
 		}
 	}

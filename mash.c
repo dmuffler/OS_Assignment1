@@ -124,17 +124,20 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-	if (WEXITSTATUS(p1Status)) {
-		printf("[SHELL 1] STATUS CODE=-1\n");
-	}
+	if( access( filePath, F_OK ) != -1 ) {
+    // file exists
+		if (WEXITSTATUS(p1Status)) {
+			printf("[SHELL 1] STATUS CODE=-1\n");
+		}
 
-	if (WEXITSTATUS(p2Status)) {
-		printf("[SHELL 2] STATUS CODE=-1\n");
-	}
+		if (WEXITSTATUS(p2Status)) {
+			printf("[SHELL 2] STATUS CODE=-1\n");
+		}
 
-	if (WEXITSTATUS(p3Status)) {
-		printf("[SHELL 3] STATUS CODE=-1\n");
-	}		
+		if (WEXITSTATUS(p3Status)) {
+			printf("[SHELL 3] STATUS CODE=-1\n");
+		}		
+	}
 	fprintf(stdout, "Done waiting on children: %d %d %d\n", p1, p2, p3);
 
 

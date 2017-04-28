@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -I. -Wall
+CFLAGS = -Wall
 
 binaries = mash
 

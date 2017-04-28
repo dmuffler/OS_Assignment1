@@ -2,7 +2,6 @@
 	Date: 4/27/17
 */
 
-
 #include "stdio.h"
 #include "stdlib.h"
 #include "unistd.h"
@@ -45,15 +44,19 @@ void buildCommands(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1],
 		
 		printf("mash-%d>", command + 1);
 		fgets(userInput, MAX_INPUT + 1, stdin);
-		userInput[strlen(userInput) - 1] = '\0';
+
+		if (userInput[strlen(userInput) - 1] == '\n') {
+			userInput[strlen(userInput) - 1] = '\0';
+		}
+
 		token = strtok(userInput, " ");
 
 		do {
-			
+		
 			commandHolder[command][argument] = strdup(token);
 			token = strtok(NULL, " ");
 			argument++;
-		
+	
 		} while(token != NULL);
 
 		actualArgCount[command] = argument;
@@ -65,10 +68,11 @@ void buildCommands(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1],
 void getFilePath(char fileHolder[MAX_ARGUMENT_COUNT + 2]) {
 
 	printf("file>");
-	if(fgets(fileHolder, MAX_INPUT + 1, stdin)){
+	
+	fgets(fileHolder, MAX_INPUT + 1, stdin);
+
+	if (fileHolder[strlen(fileHolder) - 1] == '\n') {
 		fileHolder[strlen(fileHolder) - 1] = '\0';
-	} else {
-		fileHolder = NULL;
 	}
 }
 
@@ -153,7 +157,7 @@ void freeCommandMemory(char* commandHolder[COMMAND_COUNT][MAX_ARGUMENT_COUNT + 1
 	}
 }
 
-// main entry of the Mash shell (command line not used.
+// main entry of the Mash shell (command line not used).
 int main(int argc, char *argv[]) {
 
 	// 2d array to hold the commands. 2nd dimension adds 1 to add room for 'NULL'.
